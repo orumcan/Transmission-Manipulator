@@ -9,7 +9,7 @@ public class Lever : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.tag == Tags.player || other.tag == Tags.cube)
+        if (other.tag == Tags.player || CheckCubeness(other.tag))
         {
             doorAnimator.SetBool("isTriggered", true);
         }
@@ -19,10 +19,19 @@ public class Lever : MonoBehaviour
     {
         if (shouldStay)
         {
-            if (other.tag == Tags.player || other.tag == Tags.cube)
+            if (other.tag == Tags.player || CheckCubeness(other.tag))
             {
                 doorAnimator.SetBool("isTriggered", false);
             }
         }
+    }
+
+    private bool CheckCubeness(string tag)
+    {
+        if ((tag.Equals(Tags.greenCube)) || tag.Equals(Tags.redCube) || tag.Equals(Tags.blueCube))
+        {
+            return true;
+        }
+        return false;
     }
 }

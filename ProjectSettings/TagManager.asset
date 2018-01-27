@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - Fire
+  - GreenCube
+  - RedCube
+  - BlueCube
   layers:
   - Default
   - TransparentFX

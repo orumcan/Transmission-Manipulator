@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject gun;
     public float weaponRange = 50f;
     public Transform gunEnd;
     private Camera fpsCam;
@@ -14,6 +15,11 @@ public class PlayerController : MonoBehaviour
     private Array transmissionTypes;
 
     private bool isWeaponAcquired = false;
+
+    private void OnEnable()
+    {
+        Gun.OnGunPicked += TransmissionAcquired;
+    }
 
     void Start()
     {
@@ -28,6 +34,7 @@ public class PlayerController : MonoBehaviour
    
     private void TransmissionAcquired(TransmissionType type)
     {
+        gun.SetActive(true);
         transmissionDict[type] = true;
         selectedTransmissionType = type;
         Debug.Log("Transmission " + type + " " + transmissionDict[type]);
