@@ -28,7 +28,7 @@ public class Lever : MonoBehaviour
 
     private bool CheckCubeness(string tag)
     {
-        if ((tag.Equals(Tags.greenCube)) || tag.Equals(Tags.redCube) || tag.Equals(Tags.blueCube))
+        if (tag.Equals(Tags.greenCube) || tag.Equals(Tags.redCube) || tag.Equals(Tags.blueCube))
         {
             return true;
         }

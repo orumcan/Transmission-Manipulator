@@ -6,15 +6,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject gun;
-    public float weaponRange = 50f;
     public Transform gunEnd;
-    private Camera fpsCam;
+    public float maxRayDistance;
+    public Material gunMaterial;
 
     private Dictionary<TransmissionType, bool> transmissionDict;
     public TransmissionType selectedTransmissionType = TransmissionType.None;
     private Array transmissionTypes;
 
     private bool isWeaponAcquired = false;
+    private bool isSelected = false;
+
+    RaycastHit hit;
 
     private void OnEnable()
     {
@@ -23,20 +26,21 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        fpsCam = GetComponentInParent<Camera>();
         transmissionDict = new Dictionary<TransmissionType, bool>();
         transmissionTypes = Enum.GetValues(typeof(TransmissionType));
         foreach (TransmissionType type in transmissionTypes)
         {
             transmissionDict.Add(type, false);
         }
-    }    
-   
+    }
+
     private void TransmissionAcquired(TransmissionType type)
     {
         gun.SetActive(true);
+        isWeaponAcquired = true;
         transmissionDict[type] = true;
         selectedTransmissionType = type;
+        ChangeGunColor();
         Debug.Log("Transmission " + type + " " + transmissionDict[type]);
     }
 
@@ -44,21 +48,12 @@ public class PlayerController : MonoBehaviour
     {
         Interact();
         ChangeTransmission();
-        OnTestButtonPressed();
-    }
 
-    public void OnTestButtonPressed()
-    {
-        if (Input.GetButtonDown("TypeChange"))
+        if (isSelected)
         {
-            TransmissionAcquired(TransmissionType.Heating);
-            TransmissionAcquired(TransmissionType.Vibration);
-            TransmissionAcquired(TransmissionType.Cooling);
-            TransmissionAcquired(TransmissionType.Levitation);
-            isWeaponAcquired = true;
+            hit.transform.position = gunEnd.position;
         }
     }
-
     private void ChangeTransmission()
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && isWeaponAcquired)
@@ -73,6 +68,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type] == true)
                     {
                         selectedTransmissionType = type;
+                        ChangeGunColor();
                         break;
                     }
                     else
@@ -85,6 +81,7 @@ public class PlayerController : MonoBehaviour
                                 if (transmissionDict[type2] == true)
                                 {
                                     selectedTransmissionType = type2;
+                                    ChangeGunColor();
                                     break;
                                 }
                                 else
@@ -108,6 +105,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type2] == true)
                     {
                         selectedTransmissionType = type2;
+                        ChangeGunColor();
                         break;
                     }
                     else
@@ -129,6 +127,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type] == true)
                     {
                         selectedTransmissionType = type;
+                        ChangeGunColor();
                         break;
                     }
                     else
@@ -141,6 +140,7 @@ public class PlayerController : MonoBehaviour
                                 if (transmissionDict[type2] == true)
                                 {
                                     selectedTransmissionType = type2;
+                                    ChangeGunColor();
                                     break;
                                 }
                                 else
@@ -167,6 +167,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type2] == true)
                     {
                         selectedTransmissionType = type2;
+                        ChangeGunColor();
                         break;
                     }
                     else
@@ -180,21 +181,51 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void ChangeGunColor()
+    {
+        if (selectedTransmissionType == TransmissionType.Levitation)
+        {
+            gunMaterial.color = Color.green;
+        }
+        else if (selectedTransmissionType == TransmissionType.Heating)
+        {
+            gunMaterial.color = Color.red;
+        }
+        else if (selectedTransmissionType == TransmissionType.Cooling)
+        {
+            gunMaterial.color = Color.blue;
+        }
+        else if (selectedTransmissionType == TransmissionType.Magnetic)
+        {
+            gunMaterial.color = Color.gray;
+        }
+        else if (selectedTransmissionType == TransmissionType.Vibration)
+        {
+            gunMaterial.color = Color.yellow;
+        }
+    }
+
     private void Interact()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Vector3 rayOrigin = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
-            RaycastHit hit;
-
-            if (Physics.Raycast(rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
-            {
-                if (hit.transform.tag == "Shootable")
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+                if (hit.rigidbody != null)
                 {
-                    Debug.Log("I'm the quick, you're the dead.");
-
+                    if (hit.transform.tag == "GreenCube" && selectedTransmissionType == TransmissionType.Levitation)
+                    {
+                        if (hit.distance < maxRayDistance)
+                        {
+                            Debug.Log("I'm the quick, you're the dead.");
+                            isSelected = true;
+                        }
+                    }
                 }
-            }
+        }
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            isSelected = false;
         }
     }
 }
