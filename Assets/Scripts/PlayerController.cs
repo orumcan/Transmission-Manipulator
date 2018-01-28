@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeGunColor()
     {
-        if (selectedTransmissionType == TransmissionType.Levitation)
+        if (selectedTransmissionType == TransmissionType.Magnetic)
         {
             gunMaterial.color = Color.green;
         }
@@ -195,14 +195,6 @@ public class PlayerController : MonoBehaviour
         {
             gunMaterial.color = Color.blue;
         }
-        else if (selectedTransmissionType == TransmissionType.Magnetic)
-        {
-            gunMaterial.color = Color.gray;
-        }
-        else if (selectedTransmissionType == TransmissionType.Vibration)
-        {
-            gunMaterial.color = Color.yellow;
-        }
     }
 
     private void Interact()
@@ -213,7 +205,7 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
                 if (hit.rigidbody != null)
                 {
-                    if (hit.transform.tag == "GreenCube" && selectedTransmissionType == TransmissionType.Levitation)
+                    if (hit.transform.tag == "GreenCube" && selectedTransmissionType == TransmissionType.Magnetic)
                     {
                         if (hit.distance < maxRayDistance)
                         {
