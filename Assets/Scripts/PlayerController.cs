@@ -217,13 +217,21 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
                 if (hit.rigidbody != null)
                 {
-                    if (hit.transform.tag == "GreenCube" && selectedTransmissionType == TransmissionType.Magnetic)
+                    if (hit.transform.tag == Tags.greenCube && selectedTransmissionType == TransmissionType.Magnetic)
                     {
                         if (hit.distance < maxRayDistance)
                         {
                             Debug.Log("I'm the quick, you're the dead.");
                             isSelected = true;
                         }
+                    }
+                    else if (hit.transform.tag == Tags.redCube && selectedTransmissionType == TransmissionType.Heating)
+                    {
+                        hit.transform.localScale = new Vector3(4,4,4);
+                    }
+                    else if (hit.transform.tag == Tags.blueCube && selectedTransmissionType == TransmissionType.Cooling)
+                    {
+                        hit.transform.localScale = new Vector3(2,2,2);
                     }
                 }
         }

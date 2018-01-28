@@ -6,9 +6,8 @@ TagManager:
   tags:
   - Shootable
   - Fire
-  - GreenCube
-  - RedCube
-  - BlueCube
+  - Cube
+  - LightCube
   layers:
   - Default
   - TransparentFX
