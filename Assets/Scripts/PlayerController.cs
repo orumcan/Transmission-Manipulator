@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Transform gunEnd;
     public float maxRayDistance;
     public Material gunMaterial;
+    public Text weaponType;
 
     private Dictionary<TransmissionType, bool> transmissionDict;
     public TransmissionType selectedTransmissionType = TransmissionType.None;
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
         selectedTransmissionType = type;
         ChangeGunColor();
         Debug.Log("Transmission " + type + " " + transmissionDict[type]);
+        weaponType.text = type.ToString();
     }
 
     void Update()
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type] == true)
                     {
                         selectedTransmissionType = type;
+                        weaponType.text = type.ToString();
                         ChangeGunColor();
                         break;
                     }
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour
                                 if (transmissionDict[type2] == true)
                                 {
                                     selectedTransmissionType = type2;
+                                    weaponType.text = type2.ToString();
                                     ChangeGunColor();
                                     break;
                                 }
@@ -105,6 +110,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type2] == true)
                     {
                         selectedTransmissionType = type2;
+                        weaponType.text = type2.ToString();
                         ChangeGunColor();
                         break;
                     }
@@ -127,6 +133,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type] == true)
                     {
                         selectedTransmissionType = type;
+                        weaponType.text = type.ToString();
                         ChangeGunColor();
                         break;
                     }
@@ -140,6 +147,7 @@ public class PlayerController : MonoBehaviour
                                 if (transmissionDict[type2] == true)
                                 {
                                     selectedTransmissionType = type2;
+                                    weaponType.text = type2.ToString();
                                     ChangeGunColor();
                                     break;
                                 }
@@ -167,6 +175,7 @@ public class PlayerController : MonoBehaviour
                     if (transmissionDict[type2] == true)
                     {
                         selectedTransmissionType = type2;
+                        weaponType.text = type2.ToString();
                         ChangeGunColor();
                         break;
                     }
@@ -186,14 +195,17 @@ public class PlayerController : MonoBehaviour
         if (selectedTransmissionType == TransmissionType.Magnetic)
         {
             gunMaterial.color = Color.green;
+            weaponType.color = Color.green;
         }
         else if (selectedTransmissionType == TransmissionType.Heating)
         {
             gunMaterial.color = Color.red;
+            weaponType.color = Color.red;
         }
         else if (selectedTransmissionType == TransmissionType.Cooling)
         {
             gunMaterial.color = Color.blue;
+            weaponType.color = Color.blue;
         }
     }
 
